@@ -1,19 +1,51 @@
-# TodoMVC App Template
+# HTMX • [TodoMVC](http://todomvc.com)
 
-> Template used for creating [TodoMVC](http://todomvc.com) apps
+[See the example live.](https://jon49.github.io/htmx-todomvc/)
 
-![](https://github.com/tastejs/todomvc-app-css/raw/master/screenshot.png)
+> htmx gives you access to AJAX, CSS Transitions, WebSockets and Server Sent
+> Events directly in HTML, using attributes, so you can build modern user
+> interfaces with the simplicity and power of hypertext
 
+## Resources
 
-## Getting started
+- [Website](https://htmx.org/)
 
-- Read the [Application Specification](https://github.com/tastejs/todomvc/blob/master/app-spec.md) before touching the template.
+### Articles
 
-- Delete this file and rename `app-readme.md` to `readme.md` and fill it out.
+- [Interesting article](https://htmx.org/essays/)
 
-- Clone this repo and install the dependencies with [npm](https://npmjs.com) by running: `npm install`.
+### Support
 
+- [Stack Overflow](http://stackoverflow.com/questions/tagged/htmx)
+- [Twitter](https://twitter.com/htmx_org)
 
-## License
+## Implementation
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" rel="dct:type">work</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://sindresorhus.com" property="cc:attributionName" rel="cc:attributionURL">TasteJS</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/deed.en_US">Creative Commons Attribution 4.0 International License</a>.
+This probably doesn't follow the spec exactly as I was mixing some things and
+threw it together as fast as I could. But it should be navigable and easy to see
+how it is put together. I opted to use my own custom jQuery-like library for
+simplicity and it keeps the code base much smaller.
+
+Normally, in offline-first websites I use
+[`html-template-tag-stream`](https://github.com/jon49/html-template-tag-async)
+instead of `html-template-tag` that way I'm not combining strings but streaming
+them instead. But I decided to just keep it simple here to not distract from the
+HTMX example. I also create a more robust router — but I opted for a simple
+`if`/`switch` statements instead.
+
+It is necessary to render the whole page from the service worker to keep things
+simple.
+
+All front end state is done on the front end. This keeps things simple and makes
+it so I don't have to redo the same code on the back end and on the front end.
+
+Mixing HTMX with my jQuery-like library was a real joy and made making this app
+simple and enjoyable.
+
+The build could be cleaned up. Like having `esbuild` build the different entry
+points. Also, making it cross platform would make it nicer. Maybe I'll do that
+in the future ☺.
+
+## Credit
+
+Created by [Jon Nyman](http://jnyman.com)
