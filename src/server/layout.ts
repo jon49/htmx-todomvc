@@ -9,10 +9,10 @@ export default function layout(todos: string) {
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>HTMX • TodoMVC</title>
-		<link rel="stylesheet" href="/css/base.css">
-		<link rel="stylesheet" href="/css/index.css">
+		<link rel="stylesheet" href="./css/base.css">
+		<link rel="stylesheet" href="./css/index.css">
 		<!-- CSS overrides - remove if you don't need it -->
-		<link rel="stylesheet" href="/css/app.css">
+		<link rel="stylesheet" href="./css/app.css">
 	</head>
 	<body>
 		<section class="todoapp">
@@ -74,9 +74,9 @@ export default function layout(todos: string) {
             <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
         </footer>
 		<!-- Scripts here. Don't remove ↓ -->
-		<script src="/js/lib/base.js"></script>
-		<script src="/js/app.js"></script>
-		<script src="/js/lib/htmx.js"></script>
+		<script src="./js/lib/base.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/lib/htmx.js"></script>
 	</body>
 </html>`
 }
