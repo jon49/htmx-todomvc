@@ -57,8 +57,7 @@ async function getResponse(e: FetchEvent) {
         return handle(handler, e.request, url)
     }
 
-    console.log(`Fetching '${root+url.pathname}' from cache.`)
-    return caches.match(root+url.pathname)
+    return caches.match(url.pathname)
 }
 
 async function handle(handler: string, request: Request, url: URL) {

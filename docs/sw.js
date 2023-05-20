@@ -276,8 +276,7 @@ async function getResponse(e3) {
   if (handler) {
     return handle(handler, e3.request, url);
   }
-  console.log(`Fetching '${root + url.pathname}' from cache.`);
-  return caches.match(root + url.pathname);
+  return caches.match(url.pathname);
 }
 async function handle(handler, request, url) {
   const data = await getData(request, url);
