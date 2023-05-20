@@ -130,8 +130,8 @@ function layout(todos) {
 		</section>
         <footer class="info">
             <p>Double-click to edit a todo</p>
-            <!-- Change this out with your name and url \u2193 -->
-            <p>Created by <a href="http://todomvc.com">Jon Nyman</a></p>
+            <p><a href="https://github.com/jon49/htmx-todomvc/">Source Code</a></p>
+            <p>Created by <a href="https://jnyman.com">Jon Nyman</a></p>
             <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
         </footer>
 		<!-- Scripts here. Don't remove \u2193 -->
