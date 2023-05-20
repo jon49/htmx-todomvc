@@ -1,8 +1,8 @@
-const $ = window.$
+import $ from './dollar.js'
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-    .register('/sw.js')
+    .register(`${document.location.pathname}sw.js`)
     .then(_ => {
         console.log("Service worker registered.")
     })
@@ -14,7 +14,7 @@ document.addEventListener('todos-updated', todosUpdated)
 
 function todosUpdated() {
     const totalTodos = $('#todo-list > li').count(),
-        incompleteTodos = $('#todo-list > li:not(.completed)').count()
+          incompleteTodos = $('#todo-list > li:not(.completed)').count()
 
     // Update Count for incomplete todos
     $('#count').text(incompleteTodos)
@@ -24,6 +24,10 @@ function todosUpdated() {
     $('#todo-section').classWhen('hidden', !totalTodos)
     // Hide clear-completed when there are no completed todos
     $('#clear-completed').classWhen('hidden', totalTodos === incompleteTodos)
+
+    if (totalTodos === 0) {
+        $('#new-todo').focus()
+    }
 
     updateFilter()
 }

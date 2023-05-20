@@ -9,21 +9,22 @@ import {
 } from "./server/actions.js"
 
 const version = "0.0.1"
+const root = self.location.pathname.replace('/sw.js', '')
 
 self.addEventListener("install", e => {
     console.log(`Installing version '${version}' service worker.`)
     // @ts-ignore
     e.waitUntil(
         caches.open(version)
+        // @ts-ignore
         .then(cache => cache.addAll([
             "/js/app.js",
-            "/js/dollar.js",
             "/js/lib/htmx.js",
             "/js/lib/base.js",
             "/css/base.css",
             "/css/index.css",
             "/css/app.css",
-        ])))
+        ].map(x => root + x))))
 })
 
 // @ts-ignore
@@ -45,7 +46,7 @@ self.addEventListener("activate", async (e: ExtendableEvent) => {
 
 async function getResponse(e: FetchEvent) {
     const url = new URL(e.request.url)
-    if (url.pathname === "/" && e.request.method === "GET") {
+    if (url.pathname === root + "/" && e.request.method === "GET") {
         const index = await getAll()
         return new Response(index, { headers: { "Content-Type": "text/html" } })
     }
@@ -55,7 +56,7 @@ async function getResponse(e: FetchEvent) {
         return handle(handler, e.request, url)
     }
 
-    return caches.match(e.request)
+    return caches.match(root+url.pathname)
 }
 
 async function handle(handler: string, request: Request, url: URL) {

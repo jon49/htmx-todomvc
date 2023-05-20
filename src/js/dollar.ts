@@ -1,5 +1,5 @@
 
-class App {
+class Query {
     nodes
     constructor(nodes: Element[] = []) {
         this.nodes = nodes
@@ -25,13 +25,13 @@ class App {
     }
 
     closest(selector: string) {
-        return app(this.nodes[0]?.closest(selector))
+        return query(this.nodes[0]?.closest(selector))
     }
 
     find(selector: string) {
         return this.nodes[0]
-            ? app(selector, this.nodes[0])
-        : app()
+            ? query(selector, this.nodes[0])
+        : query()
     }
 
     focus() {
@@ -54,27 +54,27 @@ class App {
     }
 }
 
-function app(val : string | Element | null = null, el: Element | null = null) {
+export default function query(val : string | Element | null = null, el: Element | null = null) {
     if (val == null) {
-        return new App([])
+        return new Query([])
     }
     if (val instanceof Element) {
-        return new App([val])
+        return new Query([val])
     }
-    return new App(Array.from((el ?? document).querySelectorAll(val)))
+    return new Query(Array.from((el ?? document).querySelectorAll(val)))
 }
 
-app.ESC_KEY = 27
-app.ENTER_KEY = 13
+query.ESC_KEY = 27
+query.ENTER_KEY = 13
 
 // @ts-ignore
-window.$ = app
+window.$ = query
 
-export type AppFunc = typeof app
+export type QueryFunc = typeof query
 
 declare global {
     interface Window {
-        $: AppFunc
+        $: QueryFunc
     }
 }
 

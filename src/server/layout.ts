@@ -8,7 +8,7 @@ export default function layout(todos: string) {
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Template • TodoMVC</title>
+		<title>HTMX • TodoMVC</title>
 		<link rel="stylesheet" href="/css/base.css">
 		<link rel="stylesheet" href="/css/index.css">
 		<!-- CSS overrides - remove if you don't need it -->
@@ -19,6 +19,7 @@ export default function layout(todos: string) {
 			<header class="header">
 				<h1>todos</h1>
 				<input
+                    id="new-todo"
                     class="new-todo"
                     placeholder="What needs to be done?"
                     autofocus
@@ -74,7 +75,6 @@ export default function layout(todos: string) {
         </footer>
 		<!-- Scripts here. Don't remove ↓ -->
 		<script src="/js/lib/base.js"></script>
-		<script src="/js/dollar.js"></script>
 		<script src="/js/app.js"></script>
 		<script src="/js/lib/htmx.js"></script>
 	</body>
