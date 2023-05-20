@@ -1,6 +1,6 @@
 # HTMX • [TodoMVC](http://todomvc.com)
 
-[See the example live.](https://jon49.github.io/htmx-todomvc/)
+[See the live example.](https://jon49.github.io/htmx-todomvc/)
 
 > htmx gives you access to AJAX, CSS Transitions, WebSockets and Server Sent
 > Events directly in HTML, using attributes, so you can build modern user
