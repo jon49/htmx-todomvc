@@ -267,6 +267,7 @@ self.addEventListener("activate", async (e3) => {
 });
 async function getResponse(e3) {
   const url = new URL(e3.request.url);
+  console.log(`Fetching '${url.pathname}'`);
   if (url.pathname === root + "/" && e3.request.method === "GET") {
     const index = await getAll();
     return new Response(index, { headers: { "Content-Type": "text/html" } });
@@ -275,6 +276,7 @@ async function getResponse(e3) {
   if (handler) {
     return handle(handler, e3.request, url);
   }
+  console.log(`Fetching '${root + url.pathname}' from cache.`);
   return caches.match(root + url.pathname);
 }
 async function handle(handler, request, url) {
