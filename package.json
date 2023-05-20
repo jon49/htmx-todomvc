@@ -1,0 +1,34 @@
+{
+    "private": true,
+    "type": "module",
+    "name": "htmx-todomvc",
+    "description": "Example of an HTMX application which works offline first",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "npm run clean && npm run static && esbuild --format=esm --watch --outdir=public --bundle --servedir=public ./src/sw.ts",
+        "static": "[ -d \"public\" ] || mkdir public && cd src && cp --parents `find . -name '*.js' -o -name '*.html' -o -name '*.css'` ../public && cd .. && npm run htmx && npm run todo && npm run iife",
+        "htmx": "mkdir -p public/js/lib && cp ./node_modules/htmx.org/dist/htmx.js ./public/js/lib/htmx.js",
+        "todo": "cp ./node_modules/todomvc-app-css/index.css ./public/css/index.css && cp ./node_modules/todomvc-common/base.css ./public/css/base.css && cp ./node_modules/todomvc-common/base.js ./public/js/lib/base.js",
+        "iife": "npx esbuild ./src/js/dollar.ts ./src/js/app.ts --format=iife --outdir=public/js",
+        "clean": "rm -rf public"
+    },
+    "dependencies": {
+        "html-template-tag": "^4.0.1",
+        "htmx.org": "^1.9.2",
+        "idb-keyval": "^6.2.1",
+        "todomvc-app-css": "^2.0.0",
+        "todomvc-common": "^1.0.0"
+    },
+    "devDependencies": {
+        "esbuild": "^0.17.19"
+    },
+    "keywords": [
+        "htmx",
+        "todo",
+        "example",
+        "service worker",
+        "offline first"
+    ],
+    "author": "Jon Nyman",
+    "license": "ISC"
+}
