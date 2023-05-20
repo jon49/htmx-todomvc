@@ -39,6 +39,10 @@ simple.
 All front end state is done on the front end. This keeps things simple and makes
 it so I don't have to redo the same code on the back end and on the front end.
 
+Normally I do an updater for the service worker too. But I didn't do it here.
+Normally I validate data and such too. But I also skipped that. It would be
+simple to add.
+
 Mixing HTMX with my jQuery-like library was a real joy and made making this app
 simple and enjoyable.
 
