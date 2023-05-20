@@ -46,6 +46,7 @@ self.addEventListener("activate", async (e: ExtendableEvent) => {
 
 async function getResponse(e: FetchEvent) {
     const url = new URL(e.request.url)
+    console.log(`Fetching '${url.pathname}'`)
     if (url.pathname === root + "/" && e.request.method === "GET") {
         const index = await getAll()
         return new Response(index, { headers: { "Content-Type": "text/html" } })
@@ -56,6 +57,7 @@ async function getResponse(e: FetchEvent) {
         return handle(handler, e.request, url)
     }
 
+    console.log(`Fetching '${root+url.pathname}' from cache.`)
     return caches.match(root+url.pathname)
 }
 
