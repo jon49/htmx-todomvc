@@ -10,7 +10,8 @@
         "htmx": "mkdir -p docs/js/lib && cp ./node_modules/htmx.org/dist/htmx.js ./docs/js/lib/htmx.js",
         "todo": "cp ./node_modules/todomvc-app-css/index.css ./docs/css/index.css && cp ./node_modules/todomvc-common/base.css ./docs/css/base.css && cp ./node_modules/todomvc-common/base.js ./docs/js/lib/base.js",
         "iife": "npx esbuild ./src/js/app.ts --bundle --format=iife --outdir=docs/js",
-        "clean": "rm -rf docs"
+        "clean": "rm -rf docs",
+        "build": "npm run clean && npm run static && esbuild --format=esm --outdir=docs --bundle ./src/sw.ts"
     },
     "dependencies": {
         "html-template-tag": "^4.0.1",
