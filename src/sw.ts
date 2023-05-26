@@ -49,7 +49,11 @@ async function getResponse(e: FetchEvent) {
     console.log(`Fetching '${url.pathname}'`)
     if (url.pathname === root + "/" && e.request.method === "GET") {
         const index = await getAll()
-        return new Response(index, { headers: { "Content-Type": "text/html" } })
+        return new Response(index, {
+            headers: {
+                "Content-Type": "text/html",
+                "HX-Trigger-After-Swap": "todos-updated",
+            } })
     }
 
     const handler = url.searchParams.get("handler")

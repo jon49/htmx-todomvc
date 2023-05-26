@@ -12,24 +12,60 @@ if ('serviceWorker' in navigator) {
 
 document.addEventListener('todos-updated', todosUpdated)
 
-function todosUpdated() {
-    const totalTodos = $('#todo-list > li').count(),
-          incompleteTodos = $('#todo-list > li:not(.completed)').count()
+let incompleteTodosCache : number | null = null
+function getIncompleteTodos() {
+    return incompleteTodosCache == null
+        ? incompleteTodosCache = $('#todo-list > li:not(.completed)').count()
+    : incompleteTodosCache
+}
 
-    // Update Count for incomplete todos
-    $('#count').text(incompleteTodos)
-    // Hide footer when there are no todos
-    $('#footer').classWhen('hidden', !totalTodos)
-    // Hide todo-section when there are no todos
-    $('#todo-section').classWhen('hidden', !totalTodos)
-    // Hide clear-completed when there are no completed todos
-    $('#clear-completed').classWhen('hidden', totalTodos === incompleteTodos)
+let totalTodosCache : number | null = null
+function getTotalTodos() {
+    return totalTodosCache == null
+        ? totalTodosCache = $('#todo-list > li').count()
+    : totalTodosCache
+}
 
-    if (totalTodos === 0) {
-        $('#new-todo').focus()
+let completedTodosCache : number | null = null
+function getCompletedTodos() {
+    return completedTodosCache == null
+        ? completedTodosCache = $('#todo-list > li.completed').count()
+    : completedTodosCache
+}
+
+function pluralize(count: number) {
+    return count === 1 ? '' : 's'
+}
+
+// @ts-ignore
+window.app = {
+    getIncompleteTodos,
+    getTotalTodos,
+    getCompletedTodos,
+    pluralize,
+}
+
+const map = new WeakMap<Element, (this: Element, event: Event) => void>()
+function todosUpdated(e: Event) {
+    incompleteTodosCache = totalTodosCache = completedTodosCache = null
+
+    for (const el of $('[x-subscribe^="todos-updated:"')) {
+        let handler = map.get(el)
+        if (!handler) {
+            // @ts-ignore
+            handler = parseCode(el) ?? (() => {})
+            // @ts-ignore
+            map.set(el, handler)
+        }
+        handler?.call(el, e)
     }
 
     updateFilter()
+}
+
+function parseCode(el: Element) {
+    const code = el.getAttribute('x-subscribe') ?? ""
+    return new Function('event', code.split(':')[1] + "; return;")
 }
 
 window.addEventListener('hashchange', handleHashChange)

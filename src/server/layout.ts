@@ -14,7 +14,7 @@ export default function layout(todos: string) {
 		<!-- CSS overrides - remove if you don't need it -->
 		<link rel="stylesheet" href="./css/app.css">
 	</head>
-	<body>
+	<body hx-ext="x-subscribe">
 		<section class="todoapp">
 			<header class="header">
 				<h1>todos</h1>
@@ -30,10 +30,15 @@ export default function layout(todos: string) {
                     hx-trigger="keyup[key=='Enter']"
                     hx-swap="beforeend"
                     hx-on="htmx:afterRequest: this.value = ''"
+                    x-subscribe="todos-updated: app.getTotalTodos() === 0 && this.focus()"
                     >
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
-			<section id="todo-section" class="main">
+			<section
+                id="todo-section"
+                class="main"
+                x-subscribe="todos-updated: $(this).classWhen('hidden', app.getTotalTodos() === 0)"
+                >
 				<input
                     id="toggle-all"
                     class="toggle-all"
@@ -45,8 +50,17 @@ export default function layout(todos: string) {
 				<ul id="todo-list" class="todo-list">$${todos}</ul>
 			</section>
 			<!-- This footer should be hidden by default and shown when there are todos -->
-			<footer id="footer" class="footer">
-				<span class="todo-count"><strong id=count></strong> items left</span>
+			<footer
+                id="footer"
+                class="footer"
+                x-subscribe="todos-updated: $(this).classWhen('hidden', app.getTotalTodos() === 0)"
+                >
+				<span
+                    class="todo-count"
+                    x-subscribe="todos-updated:
+                            const count = app.getIncompleteTodos();
+                            $(this).html('<strong>'+count+'</strong> item'+app.pluralize(count)+' left')"
+                    ></span>
 				<ul class="filters">
 					<li>
 						<a class="selected" href="#" data-action>All</a>
@@ -64,6 +78,7 @@ export default function layout(todos: string) {
                     class="clear-completed"
                     hx-post="/todos?handler=clear-completed"
                     hx-target="#todo-list"
+                    x-subscribe="todos-updated: $(this).classWhen('hidden', app.getCompletedTodos() === 0)"
                     >Clear completed</button>
 			</footer>
 		</section>

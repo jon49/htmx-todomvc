@@ -52,6 +52,25 @@ class Query {
         })
         return this
     }
+
+    html(value: any) {
+        this.nodes.forEach(x => {
+            x.innerHTML = value ?? ""
+        })
+        return this
+    }
+
+    [Symbol.iterator]() {
+        let index = -1;
+        let nodes  = this.nodes
+
+        return {
+            next: () => ({
+                value: nodes[++index],
+                done: !(index in nodes)
+            })
+        }
+    }
 }
 
 export default function query(val : string | Element | null = null, el: Element | null = null) {

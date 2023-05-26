@@ -43,6 +43,22 @@
       });
       return this;
     }
+    html(value) {
+      this.nodes.forEach((x) => {
+        x.innerHTML = value ?? "";
+      });
+      return this;
+    }
+    [Symbol.iterator]() {
+      let index = -1;
+      let nodes = this.nodes;
+      return {
+        next: () => ({
+          value: nodes[++index],
+          done: !(index in nodes)
+        })
+      };
+    }
   };
   function query(val = null, el = null) {
     if (val == null) {
@@ -66,16 +82,44 @@
     alert("Service worker is not supported. Please use a modern browser.");
   }
   document.addEventListener("todos-updated", todosUpdated);
-  function todosUpdated() {
-    const totalTodos = query("#todo-list > li").count(), incompleteTodos = query("#todo-list > li:not(.completed)").count();
-    query("#count").text(incompleteTodos);
-    query("#footer").classWhen("hidden", !totalTodos);
-    query("#todo-section").classWhen("hidden", !totalTodos);
-    query("#clear-completed").classWhen("hidden", totalTodos === incompleteTodos);
-    if (totalTodos === 0) {
-      query("#new-todo").focus();
+  var incompleteTodosCache = null;
+  function getIncompleteTodos() {
+    return incompleteTodosCache == null ? incompleteTodosCache = query("#todo-list > li:not(.completed)").count() : incompleteTodosCache;
+  }
+  var totalTodosCache = null;
+  function getTotalTodos() {
+    return totalTodosCache == null ? totalTodosCache = query("#todo-list > li").count() : totalTodosCache;
+  }
+  var completedTodosCache = null;
+  function getCompletedTodos() {
+    return completedTodosCache == null ? completedTodosCache = query("#todo-list > li.completed").count() : completedTodosCache;
+  }
+  function pluralize(count) {
+    return count === 1 ? "" : "s";
+  }
+  window.app = {
+    getIncompleteTodos,
+    getTotalTodos,
+    getCompletedTodos,
+    pluralize
+  };
+  var map = /* @__PURE__ */ new WeakMap();
+  function todosUpdated(e) {
+    incompleteTodosCache = totalTodosCache = completedTodosCache = null;
+    for (const el of query('[x-subscribe^="todos-updated:"')) {
+      let handler = map.get(el);
+      if (!handler) {
+        handler = parseCode(el) ?? (() => {
+        });
+        map.set(el, handler);
+      }
+      handler?.call(el, e);
     }
     updateFilter();
+  }
+  function parseCode(el) {
+    const code = el.getAttribute("x-subscribe") ?? "";
+    return new Function("event", code.split(":")[1] + "; return;");
   }
   window.addEventListener("hashchange", handleHashChange);
   function updateFilter() {
