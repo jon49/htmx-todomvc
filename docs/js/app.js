@@ -34,7 +34,7 @@
       }
       return this;
     }
-    count() {
+    get length() {
       return this.nodes.length;
     }
     text(value) {
@@ -84,15 +84,15 @@
   document.addEventListener("todos-updated", todosUpdated);
   var incompleteTodosCache = null;
   function getIncompleteTodos() {
-    return incompleteTodosCache == null ? incompleteTodosCache = query("#todo-list > li:not(.completed)").count() : incompleteTodosCache;
+    return incompleteTodosCache == null ? incompleteTodosCache = query("#todo-list > li:not(.completed)").length : incompleteTodosCache;
   }
   var totalTodosCache = null;
   function getTotalTodos() {
-    return totalTodosCache == null ? totalTodosCache = query("#todo-list > li").count() : totalTodosCache;
+    return totalTodosCache == null ? totalTodosCache = query("#todo-list > li").length : totalTodosCache;
   }
   var completedTodosCache = null;
   function getCompletedTodos() {
-    return completedTodosCache == null ? completedTodosCache = query("#todo-list > li.completed").count() : completedTodosCache;
+    return completedTodosCache == null ? completedTodosCache = query("#todo-list > li.completed").length : completedTodosCache;
   }
   function pluralize(count) {
     return count === 1 ? "" : "s";

@@ -15,21 +15,21 @@ document.addEventListener('todos-updated', todosUpdated)
 let incompleteTodosCache : number | null = null
 function getIncompleteTodos() {
     return incompleteTodosCache == null
-        ? incompleteTodosCache = $('#todo-list > li:not(.completed)').count()
+        ? incompleteTodosCache = $('#todo-list > li:not(.completed)').length
     : incompleteTodosCache
 }
 
 let totalTodosCache : number | null = null
 function getTotalTodos() {
     return totalTodosCache == null
-        ? totalTodosCache = $('#todo-list > li').count()
+        ? totalTodosCache = $('#todo-list > li').length
     : totalTodosCache
 }
 
 let completedTodosCache : number | null = null
 function getCompletedTodos() {
     return completedTodosCache == null
-        ? completedTodosCache = $('#todo-list > li.completed').count()
+        ? completedTodosCache = $('#todo-list > li.completed').length
     : completedTodosCache
 }
 

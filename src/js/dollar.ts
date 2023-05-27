@@ -42,7 +42,7 @@ class Query {
         return this
     }
 
-    count() {
+    get length() {
         return this.nodes.length
     }
 
