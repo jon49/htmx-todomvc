@@ -83,7 +83,7 @@ function streamResponse(generator: AsyncGenerator<any, void, unknown>) {
 async function handle(handler: string, request: Request, url: URL) {
     const data = await getData(request, url)
     const opt = { request, url, data }
-    let task : Promise<AsyncGenerator<any, void, unknown> | AsyncGenerator<any, void, unknown>[] | null> = Promise.resolve(null)
+    let task : Promise<AsyncGenerator<any, void, unknown> | null> = Promise.resolve(null)
     switch (handler) {
         case "create":
             task = createTodo(opt)

@@ -8,7 +8,7 @@ interface RequestOptions {
     url: URL
     data: any
 }
-type Handler = (o: RequestOptions) => Promise<AsyncGenerator<any, void, unknown> | AsyncGenerator<any, void, unknown>[] | null>
+type Handler = (o: RequestOptions) => Promise<AsyncGenerator<any, void, unknown> | null>
 
 export const getAll = async () => {
     const todos : number[] = (await get("todos")) ?? []
