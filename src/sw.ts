@@ -49,11 +49,7 @@ async function getResponse(e: FetchEvent) {
     console.log(`Fetching '${url.pathname}'`)
     if (url.pathname === root + "/" && e.request.method === "GET") {
         const index = await getAll()
-        return new Response(index, {
-            headers: {
-                "Content-Type": "text/html",
-                "HX-Trigger-After-Swap": "todos-updated",
-            } })
+        return streamResponse(index)
     }
 
     const handler = url.searchParams.get("handler")
@@ -64,10 +60,30 @@ async function getResponse(e: FetchEvent) {
     return caches.match(url.pathname)
 }
 
+const encoder = new TextEncoder()
+function streamResponse(generator: AsyncGenerator<any, void, unknown>) {
+    const stream = new ReadableStream({
+        async start(controller : ReadableStreamDefaultController<any>) {
+            for await (let s of generator) {
+                controller.enqueue(encoder.encode(s))
+            }
+            controller.close()
+        }
+    })
+
+    return new Response(
+        stream, {
+            headers: {
+                "Content-Type": "text/html",
+                "HX-Trigger-After-Swap": "todos-updated",
+            } 
+        })
+}
+
 async function handle(handler: string, request: Request, url: URL) {
     const data = await getData(request, url)
     const opt = { request, url, data }
-    let task = null
+    let task : Promise<AsyncGenerator<any, void, unknown> | AsyncGenerator<any, void, unknown>[] | null> = Promise.resolve(null)
     switch (handler) {
         case "create":
             task = createTodo(opt)
@@ -93,12 +109,7 @@ async function handle(handler: string, request: Request, url: URL) {
 
     const result = await task
     if (result == null) return new Response(null, { status: 204 })
-    return new Response(result, {
-        status: 200,
-        headers: {
-            "Content-Type": "text/html",
-            "HX-Trigger-After-Swap": "todos-updated",
-        } })
+    return streamResponse(result)
 }
 
 async function getData(req: Request, url: URL) {

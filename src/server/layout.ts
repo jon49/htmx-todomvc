@@ -1,6 +1,6 @@
-import html from "html-template-tag"
+import html from "html-template-tag-stream"
 
-export default function layout(todos: string) {
+export default function layout(todos?: AsyncGenerator<any, void, unknown> | AsyncGenerator<any, void, unknown>[] | null) {
     // @ts-ignore
     return html`
 <!doctype html>
@@ -47,7 +47,7 @@ export default function layout(todos: string) {
                     hx-target="#todo-list"
                     >
 				<label for="toggle-all">Mark all as complete</label>
-				<ul id="todo-list" class="todo-list">$${todos}</ul>
+				<ul id="todo-list" class="todo-list">${todos}</ul>
 			</section>
 			<!-- This footer should be hidden by default and shown when there are todos -->
 			<footer
